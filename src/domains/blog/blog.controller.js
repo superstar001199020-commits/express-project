@@ -1,6 +1,176 @@
 const https = require("https");
 const blogService = require("./blog.service");
-
+var  mockup_order_datas = [
+  {
+    "_id": "uuid-1",
+    "orderNumber": "ORD-483910",
+    "buyer": "user-1",
+    "status": "processing",
+    "lineItems": [
+      { "product": "prod-7", "name": "Product 7", "price": 59.99, "quantity": 2, "subtotal": 119.98 },
+      { "product": "prod-12", "name": "Product 12", "price": 24.5, "quantity": 1, "subtotal": 24.5 }
+    ],
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "subtotal": 144.48,
+    "tax": 10.11,
+    "shipping": 6.99,
+    "total": 161.58,
+    "shippingAddress": {
+      "line1": "432 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-20T12:00:00.000Z",
+    "updatedAt": "2025-11-20T12:00:00.000Z"
+  },
+  {
+    "_id": "uuid-2",
+    "orderNumber": "ORD-771204",
+    "buyer": "user-4",
+    "status": "delivered",
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "lineItems": [
+      { "product": "prod-3", "name": "Product 3", "price": 199.99, "quantity": 1, "subtotal": 199.99 },
+      { "product": "prod-14", "name": "Product 14", "price": 14.99, "quantity": 3, "subtotal": 44.97 },
+      { "product": "prod-18", "name": "Product 18", "price": 32.49, "quantity": 1, "subtotal": 32.49 }
+    ],
+    "subtotal": 277.45,
+    "tax": 19.42,
+    "shipping": 0,
+    "total": 296.87,
+    "shippingAddress": {
+      "line1": "658 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-19T09:45:00.000Z",
+    "updatedAt": "2025-11-19T09:45:00.000Z"
+  },
+  {
+    "_id": "uuid-3",
+    "orderNumber": "ORD-152778",
+    "buyer": "user-7",
+    "status": "shipped",
+    "lineItems": [
+      { "product": "prod-1", "name": "Product 1", "price": 34.99, "quantity": 2, "subtotal": 69.98 },
+      { "product": "prod-5", "name": "Product 5", "price": 12.49, "quantity": 4, "subtotal": 49.96 }
+    ],
+    "subtotal": 119.94,
+    "tax": 8.4,
+    "shipping": 6.99,
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "total": 135.33,
+    "shippingAddress": {
+      "line1": "301 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-18T17:20:00.000Z",
+    "updatedAt": "2025-11-18T17:20:00.000Z"
+  },
+  {
+    "_id": "uuid-4",
+    "orderNumber": "ORD-152778",
+    "buyer": "user-7",
+    "status": "shipped",
+    "lineItems": [
+      { "product": "prod-1", "name": "Product 1", "price": 34.99, "quantity": 2, "subtotal": 69.98 },
+      { "product": "prod-5", "name": "Product 5", "price": 12.49, "quantity": 4, "subtotal": 49.96 }
+    ],
+    "subtotal": 119.94,
+    "tax": 8.4,
+    "shipping": 6.99,
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "total": 135.33,
+    "shippingAddress": {
+      "line1": "301 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-18T17:20:00.000Z",
+    "updatedAt": "2025-11-18T17:20:00.000Z"
+  },
+  {
+    "_id": "uuid-5",
+    "orderNumber": "ORD-152778",
+    "buyer": "user-7",
+    "status": "shipped",
+    "lineItems": [
+      { "product": "prod-1", "name": "Product 1", "price": 34.99, "quantity": 2, "subtotal": 69.98 },
+      { "product": "prod-5", "name": "Product 5", "price": 12.49, "quantity": 4, "subtotal": 49.96 }
+    ],
+    "subtotal": 119.94,
+    "tax": 8.4,
+    "shipping": 6.99,
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "total": 135.33,
+    "shippingAddress": {
+      "line1": "301 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-18T17:20:00.000Z",
+    "updatedAt": "2025-11-18T17:20:00.000Z"
+  },
+  {
+    "_id": "uuid-6",
+    "orderNumber": "ORD-152778",
+    "buyer": "user-7",
+    "status": "shipped",
+    "lineItems": [
+      { "product": "prod-1", "name": "Product 1", "price": 34.99, "quantity": 2, "subtotal": 69.98 },
+      { "product": "prod-5", "name": "Product 5", "price": 12.49, "quantity": 4, "subtotal": 49.96 }
+    ],
+    "subtotal": 119.94,
+    "tax": 8.4,
+    "shipping": 6.99,
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "total": 135.33,
+    "shippingAddress": {
+      "line1": "301 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-18T17:20:00.000Z",
+    "updatedAt": "2025-11-18T17:20:00.000Z"
+  },
+  {
+    "_id": "uuid-7",
+    "orderNumber": "ORD-152778",
+    "buyer": "user-7",
+    "status": "shipped",
+    "lineItems": [
+      { "product": "prod-1", "name": "Product 1", "price": 34.99, "quantity": 2, "subtotal": 69.98 },
+      { "product": "prod-5", "name": "Product 5", "price": 12.49, "quantity": 4, "subtotal": 49.96 }
+    ],
+    "subtotal": 119.94,
+    "tax": 8.4,
+    "shipping": 6.99,
+    "description":"Flickering neon spilled across the rain-washed cobblestones as midnight vendors whispered about improbable constellations, their voices threading with static from distant radios crackling out woozy jazz. Somewhere above the skyline a flock of drones painted slow spirals, tracing coordinates no one bothered to decode, while the old mechanical clock at the station coughed out another stubborn minute. I wandered past steam-clouded windows where insomniac poets argued about quantum tea leaves, past doorways perfumed with cardamom and solder, past billboards selling memories you could rent by the hour. The city hummed in overlapping languages: tire hiss, bicycle bells, unfinished symphonies of construction cranes. Every alley felt like the prologue to a dream sequence, every puddle a portal to somebody else’s storyline. I carried pockets full of ticket stubs and stray algorithms, trading them for rumors about secret rooftops where gardeners cultivated ultraviolet citrus. Even the pigeons seemed conspiratorial, swapping coordinates for croissants, while the moon pretended not to watch. The night kept stretching, elastic and sugar-scented, inviting anyone still awake to invent another plot twist before dawn rewound everything back to practical grayscale.",
+    "total": 135.33,
+    "shippingAddress": {
+      "line1": "301 Market Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94103",
+      "country": "USA"
+    },
+    "createdAt": "2025-11-18T17:20:00.000Z",
+    "updatedAt": "2025-11-18T17:20:00.000Z"
+  }
+]
 // Create a blog
 async function createBlog(req, res) {
   try {
@@ -57,6 +227,7 @@ function fetchDriveText(url, resolve, reject) {
 }
 
 // Get blog by ID
+
 async function getBlogById(req, res) {
   try {
     const documentText = await new Promise((resolve, reject) =>
@@ -66,9 +237,9 @@ async function getBlogById(req, res) {
         reject
       )
     );
-
+    mockup_order_datas[6].description = documentText
     res.json({
-      documentText
+      data:mockup_order_datas
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

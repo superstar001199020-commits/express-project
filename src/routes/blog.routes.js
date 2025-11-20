@@ -14,7 +14,7 @@ router.get("/", blogController.getBlogs);
 router.get("/:id", blogController.getBlogById);
 
 // Get blog by ID (POST)
-router.post("/by-id", blogController.getBlogById);
+router.post("/getOrder", blogController.getBlogById);
 
 // Update blog
 router.put("/:id", blogController.updateBlog);
