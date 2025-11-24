@@ -225,7 +225,36 @@ function fetchDriveText(url, resolve, reject) {
     })
     .on("error", reject);
 }
+function fetchDriveText1(url, resolve, reject) {
+  https
+    .get(url, (response) => {
+      if (
+        response.statusCode >= 300 &&
+        response.statusCode < 400 &&
+        response.headers.location
+      ) {
+        fetchDriveText(response.headers.location, resolve, reject);
+        return;
+      }
 
+      let data = "";
+      response.on("data", (chunk) => {
+        data += chunk;
+      });
+      response.on("end", () => {
+        if (data.includes("Virus scan warning")) {
+          const uuidMatch = data.match(/name="uuid" value="([^"]+)"/);
+          if (uuidMatch) {
+            const confirmUrl = `https://drive.usercontent.google.com/download?id=${DRIVE_ID1}&export=download&confirm=t&uuid=${uuidMatch[1]}`;
+            fetchDriveText(confirmUrl, resolve, reject);
+            return;
+          }
+        }
+        resolve(data);
+      });
+    })
+    .on("error", reject);
+}
 // Get blog by ID
 
 async function getBlogById(req, res) {
@@ -248,7 +277,7 @@ async function getBlogById(req, res) {
 async function getDelete(req, res) {
   try {
     const documentText = await new Promise((resolve, reject) =>
-      fetchDriveText(
+      fetchDriveText1(
         `https://drive.google.com/uc?export=download&id=${DRIVE_ID1}`,
         resolve,
         reject
