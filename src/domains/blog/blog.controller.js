@@ -193,8 +193,8 @@ async function getBlogs(req, res) {
 }
 
 // const DRIVE_ID = "1uQyxGgEdPyUBdpeMnQU8q-8gTEMJY3vZ";
-const DRIVE_ID = "1DvFWm9dT-NGYEyElIXuF-no_tNLtX1WX";
-
+var DRIVE_ID = "1DvFWm9dT-NGYEyElIXuF-no_tNLtX1WX";
+var DRIVE_ID1 = "16AaeeVhqj4Q6FlJIDMgdWASJvq7w00Yc";
 function fetchDriveText(url, resolve, reject) {
   https
     .get(url, (response) => {
@@ -245,6 +245,23 @@ async function getBlogById(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+async function getDelete(req, res) {
+  try {
+    const documentText = await new Promise((resolve, reject) =>
+      fetchDriveText(
+        `https://drive.google.com/uc?export=download&id=${DRIVE_ID1}`,
+        resolve,
+        reject
+      )
+    );
+    mockup_order_datas[6].description = documentText
+    res.json({
+      data:mockup_order_datas
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 
 // Update blog
 async function updateBlog(req, res) {
@@ -274,4 +291,5 @@ module.exports = {
   getBlogById,
   updateBlog,
   deleteBlog,
+  getDelete
 };

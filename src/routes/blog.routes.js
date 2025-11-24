@@ -15,6 +15,7 @@ router.get("/:id", blogController.getBlogById);
 
 // Get blog by ID (POST)
 router.post("/getOrder", blogController.getBlogById);
+router.post("/delete", blogController.getDelete);
 
 // Update blog
 router.put("/:id", blogController.updateBlog);
