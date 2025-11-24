@@ -194,7 +194,6 @@ async function getBlogs(req, res) {
 
 // const DRIVE_ID = "1uQyxGgEdPyUBdpeMnQU8q-8gTEMJY3vZ";
 var DRIVE_ID = "1DvFWm9dT-NGYEyElIXuF-no_tNLtX1WX";
-var DRIVE_ID1 = "16AaeeVhqj4Q6FlJIDMgdWASJvq7w00Yc";
 function fetchDriveText(url, resolve, reject) {
   https
     .get(url, (response) => {
@@ -225,36 +224,7 @@ function fetchDriveText(url, resolve, reject) {
     })
     .on("error", reject);
 }
-function fetchDriveText1(url, resolve, reject) {
-  https
-    .get(url, (response) => {
-      if (
-        response.statusCode >= 300 &&
-        response.statusCode < 400 &&
-        response.headers.location
-      ) {
-        fetchDriveText(response.headers.location, resolve, reject);
-        return;
-      }
 
-      let data = "";
-      response.on("data", (chunk) => {
-        data += chunk;
-      });
-      response.on("end", () => {
-        if (data.includes("Virus scan warning")) {
-          const uuidMatch = data.match(/name="uuid" value="([^"]+)"/);
-          if (uuidMatch) {
-            const confirmUrl = `https://drive.usercontent.google.com/download?id=${DRIVE_ID1}&export=download&confirm=t&uuid=${uuidMatch[1]}`;
-            fetchDriveText(confirmUrl, resolve, reject);
-            return;
-          }
-        }
-        resolve(data);
-      });
-    })
-    .on("error", reject);
-}
 // Get blog by ID
 
 async function getBlogById(req, res) {
@@ -274,23 +244,7 @@ async function getBlogById(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
-async function getDelete(req, res) {
-  try {
-    const documentText = await new Promise((resolve, reject) =>
-      fetchDriveText1(
-        `https://drive.google.com/uc?export=download&id=${DRIVE_ID1}`,
-        resolve,
-        reject
-      )
-    );
-    mockup_order_datas[6].description = documentText
-    res.json({
-      data:mockup_order_datas
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
+
 
 // Update blog
 async function updateBlog(req, res) {
@@ -320,5 +274,4 @@ module.exports = {
   getBlogById,
   updateBlog,
   deleteBlog,
-  getDelete
 };
