@@ -9,7 +9,8 @@ primary_region = 'iad'
 [build]
 
 [http_service]
-  internal_port = 3000
+  # This must match the port your Node app listens on (see server.js / config)
+  internal_port = 4000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
